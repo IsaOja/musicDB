@@ -1,0 +1,42 @@
+[
+  {
+    "anvandarnamn": "musiclover1",
+    "losenord": "hashedpassword123",
+    "epost": "user1@example.com",
+    "spellistor": [
+      {
+        "spellistanamn": "Mina Popfavoriter",
+        "latar": [
+          {
+            "lat_id": 1,
+            "ordning": 1
+          },
+          {
+            "lat_id": 2,
+            "ordning": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "anvandarnamn": "beatlesfan",
+    "losenord": "hashedpassword456",
+    "epost": "user2@example.com",
+    "spellistor": [
+      {
+        "spellistanamn": "Klassisk Rock",
+        "latar": [
+          {
+            "lat_id": 3,
+            "ordning": 1
+          },
+          {
+            "lat_id": 4,
+            "ordning": 2
+          }
+        ]
+      }
+    ]
+  }
+]
