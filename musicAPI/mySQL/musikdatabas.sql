@@ -70,43 +70,43 @@ CREATE TABLE SpellistaLåtar (
     FOREIGN KEY (LåtID) REFERENCES Låtar(LåtID)
 );
 
--- Exempeldata
-INSERT INTO Artister (ArtistNamn, ArtistInfo) VALUES
-('Taylor Swift', 'Amerikansk singer-songwriter'),
-('The Beatles', 'Brittiskt rockband från Liverpool');
+-- -- Exempeldata
+-- INSERT INTO Artister (ArtistNamn, ArtistInfo) VALUES
+-- ('Taylor Swift', 'Amerikansk singer-songwriter'),
+-- ('The Beatles', 'Brittiskt rockband från Liverpool');
 
-INSERT INTO Album (AlbumTitel, ArtistID, Utgivningsår) VALUES
-('1989', 1, 2014),
-('Abbey Road', 2, 1969);
+-- INSERT INTO Album (AlbumTitel, ArtistID, Utgivningsår) VALUES
+-- ('1989', 1, 2014),
+-- ('Abbey Road', 2, 1969);
 
-INSERT INTO Låtar (LåtTitel, AlbumID, Spårnummer, Längd) VALUES
-('Blank Space', 1, 2, '00:03:51'),
-('Style', 1, 3, '00:03:51'),
-('Come Together', 2, 1, '00:04:19'),
-('Something', 2, 2, '00:03:03');
+-- INSERT INTO Låtar (LåtTitel, AlbumID, Spårnummer, Längd) VALUES
+-- ('Blank Space', 1, 2, '00:03:51'),
+-- ('Style', 1, 3, '00:03:51'),
+-- ('Come Together', 2, 1, '00:04:19'),
+-- ('Something', 2, 2, '00:03:03');
 
-INSERT INTO Genrer (GenreNamn) VALUES
-('Pop'),
-('Rock'),
-('Indie');
+-- INSERT INTO Genrer (GenreNamn) VALUES
+-- ('Pop'),
+-- ('Rock'),
+-- ('Indie');
 
-INSERT INTO LåtGenrer (LåtID, GenreID) VALUES
-(1, 1),
-(2, 1),
-(3, 2),
-(4, 2),
-(4, 3);
+-- INSERT INTO LåtGenrer (LåtID, GenreID) VALUES
+-- (1, 1),
+-- (2, 1),
+-- (3, 2),
+-- (4, 2),
+-- (4, 3);
 
-INSERT INTO Användare (Användarnamn, Lösenord, Epost) VALUES
-('musiclover1', 'hashedpassword123', 'user1@example.com'),
-('beatlesfan', 'hashedpassword456', 'user2@example.com');
+-- INSERT INTO Användare (Användarnamn, Lösenord, Epost) VALUES
+-- ('musiclover1', 'hashedpassword123', 'user1@example.com'),
+-- ('beatlesfan', 'hashedpassword456', 'user2@example.com');
 
-INSERT INTO Spellistor (AnvändarID, SpellistaNamn) VALUES
-(1, 'Mina Popfavoriter'),
-(2, 'Klassisk Rock');
+-- INSERT INTO Spellistor (AnvändarID, SpellistaNamn) VALUES
+-- (1, 'Mina Popfavoriter'),
+-- (2, 'Klassisk Rock');
 
-INSERT INTO SpellistaLåtar (SpellistaID, LåtID, Ordning) VALUES
-(1, 1, 1),
-(1, 2, 2),
-(2, 3, 1),
-(2, 4, 2);
+-- INSERT INTO SpellistaLåtar (SpellistaID, LåtID, Ordning) VALUES
+-- (1, 1, 1),
+-- (1, 2, 2),
+-- (2, 3, 1),
+-- (2, 4, 2);
