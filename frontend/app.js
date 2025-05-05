@@ -1,143 +1,212 @@
+
 // Hämta alla artister från MySQL
-async function fetchMySQLArtists() {
-    try {
-      const response = await fetch("http://localhost:3000/api/mysql/artists");
-      const artists = await response.json();
-      console.log(artists);  // Här kan du visa artister i din UI
-    } catch (error) {
-      console.error("Error fetching MySQL artists:", error);
-    }
+async function getMySQLArtists() {
+    const res = await fetch("http://localhost:3000/api/mysql/artists");
+    const data = await res.json();
+    console.log("MySQL artister:", data);
   }
+  
+  // Lägg till artist i MySQL(post)
+  async function addMySQLArtist(namn, info) {
+    const res = await fetch("http://localhost:3000/api/mysql/artists", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        ArtistNamn: namn,
+        ArtistInfo: info
+      })
+    });// === MySQL-artister ===
+
+// GET – hämta alla artister från MySQL-databasen
+async function hamtaMySQLArtister() {
+  const res = await fetch("http://localhost:3000/api/mysql/artists");
+  const data = await res.json();
+  console.log("Artister från MySQL:", data);
+}
+
+// POST – lägg till en ny artist i MySQL
+async function laggTillMySQLArtist(namn, info) {
+  const res = await fetch("http://localhost:3000/api/mysql/artists", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ ArtistNamn: namn, ArtistInfo: info })
+  });
+
+  const data = await res.json();
+  console.log("Lade till artist i MySQL:", data);
+}
+
+// PUT – uppdatera befintlig artist i MySQL
+async function uppdateraMySQLArtist(id, namn, info) {
+  const res = await fetch(`http://localhost:3000/api/mysql/artists/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ ArtistNamn: namn, ArtistInfo: info })
+  });
+
+  const data = await res.json();
+  console.log("Uppdaterad i MySQL:", data);
+}
+
+// DELETE – ta bort en artist från MySQL
+async function taBortMySQLArtist(id) {
+  const res = await fetch(`http://localhost:3000/api/mysql/artists/${id}`, {
+    method: "DELETE"
+  });
+
+  const data = await res.json();
+  console.log("Tog bort artist från MySQL:", data);
+}
+
+
+
+// === MongoDB-artister ===
+
+// GET – hämta alla artister från MongoDB
+async function hamtaMongoArtister() {
+  const res = await fetch("http://localhost:3000/api/mongodb/artists");
+  const data = await res.json();
+  console.log("Artister från MongoDB:", data);
+}
+
+// POST – lägg till ny artist i MongoDB
+async function laggTillMongoArtist(namn, genre, land, album) {
+  const res = await fetch("http://localhost:3000/api/mongodb/artists", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name: namn, genre, country: land, albums: album })
+  });
+
+  const data = await res.json();
+  console.log("Lade till i MongoDB:", data);
+}
+
+// PUT – uppdatera artist i MongoDB
+async function uppdateraMongoArtist(id, namn, genre, land, album) {
+  const res = await fetch(`http://localhost:3000/api/mongodb/artists/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name: namn, genre, country: land, albums: album })
+  });
+
+  const data = await res.json();
+  console.log("Uppdaterad i MongoDB:", data);
+}
+
+// DELETE – ta bort artist från MongoDB
+async function taBortMongoArtist(id) {
+  const res = await fetch(`http://localhost:3000/api/mongodb/artists/${id}`, {
+    method: "DELETE"
+  });
+
+  const data = await res.json();
+  console.log("Tog bort från MongoDB:", data);
+}
+
+  
+    const data = await res.json();
+    console.log("Ny MySQL-artist:", data);
+  }
+  
+  // (Uppdatera) artist i MySQL 
+  async function updateMySQLArtist(id, namn, info) {
+    const res = await fetch(`http://localhost:3000/api/mysql/artists/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        ArtistNamn: namn,
+        ArtistInfo: info
+      })
+    });
+  
+    const data = await res.json();
+    console.log("Uppdaterad MySQL-artist:", data);
+  }
+  
+  // (Ta bort) artist i MySQL
+  async function deleteMySQLArtist(id) {
+    const res = await fetch(`http://localhost:3000/api/mysql/artists/${id}`, {
+      method: "DELETE"
+    });
+  
+    const data = await res.json();
+    console.log("Borttagen MySQL-artist:", data);
+  }
+  
+
+
+
+
+  // MONGODB 
+  
+
+
   
   // Hämta alla artister från MongoDB
-  async function fetchMongoArtists() {
-    try {
-      const response = await fetch("http://localhost:3000/api/mongodb/artists");
-      const artists = await response.json();
-      console.log(artists);  // Här kan du visa artister i din UI
-    } catch (error) {
-      console.error("Error fetching MongoDB artists:", error);
-    }
+  async function getMongoArtists() {
+    const res = await fetch("http://localhost:3000/api/mongodb/artists");
+    const data = await res.json();
+    console.log("MongoDB artister:", data);
   }
   
-
-  // Lägg till en artist i MySQL
-async function addMySQLArtist(name, info) {
-    try {
-      const response = await fetch("http://localhost:3000/api/mysql/artists", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          ArtistNamn: name,
-          ArtistInfo: info
-        })
-      });
   
-      const newArtist = await response.json();
-      console.log(newArtist);  // Här kan du visa den nya artisten i UI
-    } catch (error) {
-      console.error("Error adding MySQL artist:", error);
-    }
-  }
-  
-  // Lägg till en artist i MongoDB
+  // Lägg till artist i MongoDB (post)
   async function addMongoArtist(name, genre, country, albums) {
-    try {
-      const response = await fetch("http://localhost:3000/api/mongodb/artists", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          name: name,
-          genre: genre,
-          country: country,
-          albums: albums
-        })
-      });
+    const res = await fetch("http://localhost:3000/api/mongodb/artists", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name,
+        genre,
+        country,
+        albums
+      })
+    });
   
-      const newArtist = await response.json();
-      console.log(newArtist);  // Här kan du visa den nya artisten i UI
-    } catch (error) {
-      console.error("Error adding MongoDB artist:", error);
-    }
-  }
-
-  
-
-  // Uppdatera artist i MySQL
-async function updateMySQLArtist(id, name, info) {
-    try {
-      const response = await fetch(`http://localhost:3000/api/mysql/artists/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          ArtistNamn: name,
-          ArtistInfo: info
-        })
-      });
-  
-      const updatedArtist = await response.json();
-      console.log(updatedArtist);  // Här kan du visa den uppdaterade artisten i UI
-    } catch (error) {
-      console.error("Error updating MySQL artist:", error);
-    }
+    const data = await res.json();
+    console.log("Ny MongoDB-artist:", data);
   }
   
-  // Uppdatera artist i MongoDB
+  // (Uppdatera) artist i MongoDB
   async function updateMongoArtist(id, name, genre, country, albums) {
-    try {
-      const response = await fetch(`http://localhost:3000/api/mongodb/artists/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          name: name,
-          genre: genre,
-          country: country,
-          albums: albums
-        })
-      });
+    const res = await fetch(`http://localhost:3000/api/mongodb/artists/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name,
+        genre,
+        country,
+        albums
+      })
+    });
   
-      const updatedArtist = await response.json();
-      console.log(updatedArtist);  // Här kan du visa den uppdaterade artisten i UI
-    } catch (error) {
-      console.error("Error updating MongoDB artist:", error);
-    }
-  }
-
-
-  // Radera artist från MySQL
-async function deleteMySQLArtist(id) {
-    try {
-      const response = await fetch(`http://localhost:3000/api/mysql/artists/${id}`, {
-        method: "DELETE"
-      });
-  
-      const result = await response.json();
-      console.log(result);  // Här kan du ta bort artisten från UI
-    } catch (error) {
-      console.error("Error deleting MySQL artist:", error);
-    }
+    const data = await res.json();
+    console.log("Uppdaterad MongoDB-artist:", data);
   }
   
-  // Radera artist från MongoDB
+  //( Ta bort) artist i MongoDB
   async function deleteMongoArtist(id) {
-    try {
-      const response = await fetch(`http://localhost:3000/api/mongodb/artists/${id}`, {
-        method: "DELETE"
-      });
+    const res = await fetch(`http://localhost:3000/api/mongodb/artists/${id}`, {
+      method: "DELETE"
+    });
   
-      const result = await response.json();
-      console.log(result);  // Här kan du ta bort artisten från UI
-    } catch (error) {
-      console.error("Error deleting MongoDB artist:", error);
-    }
+    const data = await res.json();
+    console.log("Borttagen MongoDB-artist:", data);
   }
-  
-  
+   
