@@ -1,17 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "./views/HomeView.vue";
-import AlbumsView from "./views/AlbumsView.vue";
-import ArtistsView from "./views/ArtistsView.vue";
-import PlaylistsView from "./views/PlaylistsView.vue";
-import SongsView from "./views/SongsView.vue";
+import ArtistsViewMongo from "./views/ArtistsViewMongo.vue";
+import ArtistsViewMySQL from "./views/ArtistsViewMySQL.vue";
 
 const routes = [
   { path: "/", component: HomeView },
   { path: "/home", component: HomeView },
-  { path: "/albums", component: AlbumsView },
-  { path: "/artists", component: ArtistsView },
-  { path: "/playlists", component: PlaylistsView },
-  { path: "/songs", component: SongsView },
+  { path: "/mongoartists", component: ArtistsViewMongo },
+  { path: "/mysqlartists", component: ArtistsViewMySQL },
 ];
 
 const router = createRouter({
