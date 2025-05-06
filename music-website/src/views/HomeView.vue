@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <h1>Welcome to the Music Website</h1>
-    <p>Explore albums, artists, songs, and playlists!</p>
+    <p>Explore MongoDB-artists and MySQL-artists!</p>
   </div>
 </template>
 

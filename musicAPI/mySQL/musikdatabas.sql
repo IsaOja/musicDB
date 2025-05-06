@@ -52,23 +52,23 @@ CREATE TABLE Användare (
     Epost VARCHAR(100) NOT NULL
 );
 
--- Spellistor
-CREATE TABLE Spellistor (
-    SpellistaID INT AUTO_INCREMENT PRIMARY KEY,
-    AnvändarID INT NOT NULL,
-    SpellistaNamn VARCHAR(100) NOT NULL,
-    FOREIGN KEY (AnvändarID) REFERENCES Användare(AnvändarID)
-);
+-- -- Spellistor
+-- CREATE TABLE Spellistor (
+--     SpellistaID INT AUTO_INCREMENT PRIMARY KEY,
+--     AnvändarID INT NOT NULL,
+--     SpellistaNamn VARCHAR(100) NOT NULL,
+--     FOREIGN KEY (AnvändarID) REFERENCES Användare(AnvändarID)
+-- );
 
--- SpellistaLåtar
-CREATE TABLE SpellistaLåtar (
-    SpellistaID INT NOT NULL,
-    LåtID INT NOT NULL,
-    Ordning INT,
-    PRIMARY KEY (SpellistaID, LåtID),
-    FOREIGN KEY (SpellistaID) REFERENCES Spellistor(SpellistaID),
-    FOREIGN KEY (LåtID) REFERENCES Låtar(LåtID)
-);
+-- -- SpellistaLåtar
+-- CREATE TABLE SpellistaLåtar (
+--     SpellistaID INT NOT NULL,
+--     LåtID INT NOT NULL,
+--     Ordning INT,
+--     PRIMARY KEY (SpellistaID, LåtID),
+--     FOREIGN KEY (SpellistaID) REFERENCES Spellistor(SpellistaID),
+--     FOREIGN KEY (LåtID) REFERENCES Låtar(LåtID)
+-- );
 
 -- -- Exempeldata
 -- INSERT INTO Artister (ArtistNamn, ArtistInfo) VALUES

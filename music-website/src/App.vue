@@ -11,10 +11,12 @@ app.mount("#app");
   <div id="app">
     <nav class="navbar">
       <router-link to="/" class="nav-link">Home</router-link>
-      <router-link to="/albums" class="nav-link">Albums</router-link>
-      <router-link to="/artists" class="nav-link">Artists</router-link>
-      <router-link to="/songs" class="nav-link">Songs</router-link>
-      <router-link to="/playlists" class="nav-link">Playlists</router-link>
+      <router-link to="/mongoartists" class="nav-link"
+        >MongoDB Artists</router-link
+      >
+      <router-link to="/mysqlartists" class="nav-link"
+        >MySQL Artists</router-link
+      >
     </nav>
     <router-view />
   </div>
