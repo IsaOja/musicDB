@@ -1,8 +1,6 @@
 {
   "name": "music-website",
   "version": "1.0.0",
-  "description": "A simple music-themed website project.",
-  "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,6 +15,5 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.2",
     "vite": "^6.3.1"
-  },
-  "license": "ISC"
+  }
 }
