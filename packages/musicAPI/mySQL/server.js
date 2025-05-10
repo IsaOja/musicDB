@@ -1,40 +1,39 @@
-// GET – hämta alla artister
-async function getMySQLArtists() {
-    const res = await fetch("http://localhost:3000/api/mysql/artists");
-    const data = await res.json();
-    console.log("🎵 MySQL-artister:", data);
+const express = require('express');
+const mysql = require('mysql2');
+const app = express();
+const PORT = 3000;
+
+// Middleware
+app.use(express.json());
+
+// Skapa en MySQL-anslutning
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'password',
+  database: 'MusikDatabas'
+});
+
+// Anslut till databasen
+db.connect((err) => {
+  if (err) {
+    console.log('Error connecting to MySQL:', err);
+  } else {
+    console.log('Connected to MySQL');
   }
-  
-  // POST – lägg till ny artist
-  async function addMySQLArtist(namn, info) {
-    const res = await fetch("http://localhost:3000/api/mysql/artists", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ArtistNamn: namn, ArtistInfo: info })
-    });A
-    const data = await res.json();
-    console.log("✅ Ny MySQL-artist:", data);
-  }
-  
-  // PUT – uppdatera en artist
-  async function updateMySQLArtist(id, namn, info) {
-    const res = await fetch(`http://localhost:3000/api/mysql/artists/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ArtistNamn: namn, ArtistInfo: info })
-    });
-    const data = await res.json();
-    console.log("✏️ Uppdaterad MySQL-artist:", data);
-  }
-  
-  // DELETE – ta bort en artist
-  async function deleteMySQLArtist(id) {
-    const res = await fetch(`http://localhost:3000/api/mysql/artists/${id}`, {
-      method: "DELETE"
-    });
-    const data = await res.json();
-    console.log("🗑️ Borttagen MySQL-artist:", data);
-  }
-  
-  
- 
+});
+
+// Gör databasanslutningen tillgänglig i req-objektet
+app.use((req, res, next) => {
+  req.db = db;
+  next();
+});
+
+// Rutter
+const mysqlRoutes = require('../src/routes/musicdbRoutes');
+app.use('/api/mysql', mysqlRoutes);
+
+// Starta servern
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
