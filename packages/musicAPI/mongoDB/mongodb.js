@@ -1,13 +1,8 @@
-const mongoose = require("mongoose");
 const Counter = require("./counter");
-
-mongoose.connect("mongodb://localhost:27017/lab33", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const mongoose = require("mongoose");
 
 const artistSchema = new mongoose.Schema({
-  id: Number, // Auto-incremented ID
+  id: Number,
   name: String,
   genre: String,
   country: String,
@@ -20,15 +15,14 @@ const artistSchema = new mongoose.Schema({
   ],
 });
 
-// Pre-save hook to auto-increment the ID
 artistSchema.pre("save", async function (next) {
-  if (!this.isNew) return next(); // Only increment on new documents
+  if (!this.isNew) return next();
 
   try {
     const counter = await Counter.findByIdAndUpdate(
       { _id: "artistId" },
       { $inc: { seq: 1 } },
-      { new: true, upsert: true } // Create the counter if it doesn't exist
+      { new: true, upsert: true }
     );
     this.id = counter.seq;
     next();
@@ -39,7 +33,6 @@ artistSchema.pre("save", async function (next) {
 
 const Artist = mongoose.model("Artist", artistSchema);
 
-// Example: Insert artists into the database
 async function seedDatabase() {
   try {
     await Artist.insertMany([
@@ -79,8 +72,5 @@ async function seedDatabase() {
     console.error("Error seeding database:", err.message);
   }
 }
-
-// Uncomment the following line to seed the database when this file is run
-// seedDatabase();
 
 module.exports = Artist;

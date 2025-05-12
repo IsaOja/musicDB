@@ -46,9 +46,9 @@ router.put("/artists/:id", async (req, res) => {
     const updatedData = req.body;
 
     const result = await Artist.findOneAndUpdate(
-      { id: artistId }, // Match the artist by the `id` field
-      updatedData, // Update the artist with the new data
-      { new: true } // Return the updated document
+      { id: artistId },
+      updatedData,
+      { new: true }
     );
 
     if (!result) {

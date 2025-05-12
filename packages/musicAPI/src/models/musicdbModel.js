@@ -1,17 +1,34 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const musicdbController = require('../controllers/musicdbController');  // Importera musicdbController
+const musicdbController = require("../controllers/musicdbController"); // Importera musicdbController
+const db = require("../db"); // Databasanslutning
 
-// Hämta alla artister
-router.get('/artists', musicdbController.getAllArtists);
+const musicdbModel = {
+  async getAllArtists() {
+    const [rows] = await db.query("SELECT * FROM Artister");
+    return rows;
+  },
 
-// Lägg till en ny artist
-router.post('/artists', musicdbController.createArtist);
+  async createArtist(ArtistNamn, ArtistInfo) {
+    const [result] = await db.query(
+      "INSERT INTO Artister (ArtistNamn, ArtistInfo) VALUES (?, ?)",
+      [ArtistNamn, ArtistInfo]
+    );
+    return { id: result.insertId, ArtistNamn, ArtistInfo };
+  },
 
-// Uppdatera en artist
-router.put('/artists/:id', musicdbController.updateArtist);
+  async updateArtist(id, ArtistNamn, ArtistInfo) {
+    await db.query(
+      "UPDATE Artister SET ArtistNamn = ?, ArtistInfo = ? WHERE ArtistID = ?",
+      [ArtistNamn, ArtistInfo, id]
+    );
+    return { id, ArtistNamn, ArtistInfo };
+  },
 
-// Ta bort en artist
-router.delete('/artists/:id', musicdbController.deleteArtist);
+  async deleteArtist(id) {
+    await db.query("DELETE FROM Artister WHERE ArtistID = ?", [id]);
+    return { message: `Artist med ID ${id} har tagits bort.` };
+  },
+};
 
-module.exports = router;
+module.exports = musicdbModel;

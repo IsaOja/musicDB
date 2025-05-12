@@ -20,26 +20,31 @@ export default {
     });
     const editingArtist = ref(null);
 
+    // Fetch all artists with albums and tracks
     const fetchArtists = async () => {
-      const res = await fetch("http://localhost:3000/api/mysql/artists");
-      artists.value = await res.json();
+      try {
+        const res = await fetch("http://localhost:3000/api/mysql/artists");
+        if (!res.ok) {
+          throw new Error(`Failed to fetch: ${res.statusText}`);
+        }
+        artists.value = await res.json();
+      } catch (err) {
+        console.error("Error fetching artists:", err.message);
+      }
     };
 
+    // Add a new artist
     const addArtist = async () => {
       await fetch("http://localhost:3000/api/mysql/artists", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newArtist.value),
       });
-      newArtist.value = {
-        name: "",
-        genre: "",
-        country: "",
-        albums: [],
-      };
+      newArtist.value = { name: "", genre: "", country: "", albums: [] };
       fetchArtists();
     };
 
+    // Add an album to the new artist
     const addAlbumToNewArtist = () => {
       if (!newAlbum.value.title || !newAlbum.value.release_year) {
         alert("Please provide both album title and release year.");
@@ -52,18 +57,7 @@ export default {
       newAlbum.value = { title: "", release_year: "" };
     };
 
-    const addAlbumToEditingArtist = () => {
-      if (!newAlbum.value.title || !newAlbum.value.release_year) {
-        alert("Please provide both album title and release year.");
-        return;
-      }
-      editingArtist.value.albums.push({
-        ...newAlbum.value,
-        tracks: [],
-      });
-      newAlbum.value = { title: "", release_year: "" };
-    };
-
+    // Add a track to an album for the new artist
     const addTrackToNewAlbum = (albumIndex) => {
       const track = { ...newTrack.value };
       if (!track.title || !track.duration) {
@@ -74,24 +68,12 @@ export default {
       newTrack.value = { title: "", duration: "" };
     };
 
-    const addTrackToAlbum = (albumIndex) => {
-      const track = { ...newTrack.value };
-      if (!track.title || !track.duration) {
-        alert("Please provide both track title and duration.");
-        return;
-      }
-      editingArtist.value.albums[albumIndex].tracks.push(track);
-      newTrack.value = { title: "", duration: "" };
-    };
-
+    // Remove a track from a new album
     const removeTrackFromNewAlbum = (albumIndex, trackIndex) => {
       newArtist.value.albums[albumIndex].tracks.splice(trackIndex, 1);
     };
 
-    const removeTrack = (albumIndex, trackIndex) => {
-      editingArtist.value.albums[albumIndex].tracks.splice(trackIndex, 1);
-    };
-
+    // Delete an artist
     const deleteArtist = async (id) => {
       await fetch(`http://localhost:3000/api/mysql/artists/${id}`, {
         method: "DELETE",
@@ -99,10 +81,12 @@ export default {
       fetchArtists();
     };
 
+    // Edit an artist
     const editArtist = (artist) => {
       editingArtist.value = JSON.parse(JSON.stringify(artist));
     };
 
+    // Update an artist
     const updateArtist = async () => {
       await fetch(
         `http://localhost:3000/api/mysql/artists/${editingArtist.value.id}`,
@@ -116,6 +100,36 @@ export default {
       fetchArtists();
     };
 
+    // Add an album to the editing artist
+    const addAlbumToEditingArtist = () => {
+      if (!newAlbum.value.title || !newAlbum.value.release_year) {
+        alert("Please provide both album title and release year.");
+        return;
+      }
+      editingArtist.value.albums.push({
+        ...newAlbum.value,
+        tracks: [],
+      });
+      newAlbum.value = { title: "", release_year: "" };
+    };
+
+    // Add a track to an album for the editing artist
+    const addTrackToAlbum = (albumIndex) => {
+      const track = { ...newTrack.value };
+      if (!track.title || !track.duration) {
+        alert("Please provide both track title and duration.");
+        return;
+      }
+      editingArtist.value.albums[albumIndex].tracks.push(track);
+      newTrack.value = { title: "", duration: "" };
+    };
+
+    // Remove a track from an album for the editing artist
+    const removeTrack = (albumIndex, trackIndex) => {
+      editingArtist.value.albums[albumIndex].tracks.splice(trackIndex, 1);
+    };
+
+    // Cancel editing
     const cancelEdit = () => {
       editingArtist.value = null;
     };
@@ -131,14 +145,14 @@ export default {
       fetchArtists,
       addArtist,
       addAlbumToNewArtist,
-      addAlbumToEditingArtist,
       addTrackToNewAlbum,
-      addTrackToAlbum,
       removeTrackFromNewAlbum,
-      removeTrack,
       deleteArtist,
       editArtist,
       updateArtist,
+      addAlbumToEditingArtist,
+      addTrackToAlbum,
+      removeTrack,
       cancelEdit,
     };
   },
@@ -182,7 +196,7 @@ export default {
             :key="album.title"
             class="list-group-item"
           >
-            <strong>{{ album.title }}</strong>
+            <strong>{{ album.title }}</strong> ({{ album.release_year }})
             <ul class="list-group mt-2">
               <li
                 v-for="(track, trackIndex) in album.tracks"
@@ -198,6 +212,7 @@ export default {
                 </button>
               </li>
             </ul>
+            <!-- Add Track Form -->
             <div class="mt-3">
               <h5>Add Track</h5>
               <div class="mb-2">
@@ -206,8 +221,6 @@ export default {
                   class="form-control"
                   placeholder="Track Title"
                 />
-              </div>
-              <div class="mb-2">
                 <input
                   v-model="newTrack.duration"
                   class="form-control"
@@ -251,11 +264,7 @@ export default {
     </div>
 
     <!-- Artists List -->
-    <div
-      v-if="artists.length"
-      class="row justify-content-center"
-      style="max-width: 900px"
-    >
+    <div v-if="artists.length" class="row justify-content-center">
       <h2 class="text-center mb-4">Artists</h2>
       <div v-for="artist in artists" :key="artist.id" class="col-12 mb-4">
         <div v-if="editingArtist && editingArtist.id === artist.id">
@@ -371,7 +380,7 @@ export default {
                 />
               </div>
               <div
-                class="d-flex justify-content-between align-items-center mt-3 gap-2"
+                class="d-flex justify-content-center align-items-center mt-3 gap-2"
               >
                 <button
                   @click="addAlbumToEditingArtist"

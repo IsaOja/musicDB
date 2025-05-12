@@ -1,39 +1,34 @@
-// server.js
 const app = require("./app");
-const mysql = require("mysql2");
+const db = require("./db");
 const mongoose = require("mongoose");
 
 const PORT = process.env.PORT || 3000;
 
-// MySQL-anslutning
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "password",
-  database: "MusikDatabas"
-});
-
-db.connect((err) => {
-  if (err) {
-    console.error("MySQL-anslutning misslyckades:", err);
-  } else {
+// Test MySQL connection
+db.getConnection()
+  .then(() => {
     console.log("Ansluten till MySQL");
-  }
-});
+  })
+  .catch((err) => {
+    console.error("MySQL-anslutning misslyckades:", err);
+  });
 
 // MongoDB-anslutning
-mongoose.connect("mongodb://localhost:27017/musikdb", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => {
-  console.log("Ansluten till MongoDB");
-}).catch(err => {
-  console.error("MongoDB-anslutning misslyckades:", err);
-});
+mongoose
+  .connect("mongodb://localhost:27017/lab33", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Ansluten till MongoDB");
+  })
+  .catch((err) => {
+    console.error("MongoDB-anslutning misslyckades:", err);
+  });
 
 // Middleware för att lägga till MySQL i req
 app.use((req, res, next) => {
-  req.db = db;
+  req.db = db; // Attach the MySQL connection pool to the request object
   next();
 });
 
