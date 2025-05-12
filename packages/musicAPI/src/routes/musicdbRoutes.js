@@ -34,7 +34,7 @@ router.put("/artists/:id", async (req, res) => {
 
   try {
     await db.query(
-      "UPDATE Artister SET ArtistNamn = ?, ArtistInfo = ? WHERE id = ?",
+      "UPDATE Artister SET ArtistNamn = ?, ArtistInfo = ? WHERE ArtistID = ?",
       [ArtistNamn, ArtistInfo, id]
     );
     res.json({ id, ArtistNamn, ArtistInfo });
@@ -48,7 +48,7 @@ router.delete("/artists/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    await db.query("DELETE FROM Artister WHERE id = ?", [id]);
+    await db.query("DELETE FROM Artister WHERE ArtistID = ?", [id]);
     res.json({ message: `Artist med ID ${id} har tagits bort.` });
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -1,4 +1,4 @@
-const db = require('../db');  // Importera MySQL-anslutningen från db.js
+const db = require('../db');  
 
 // Hämta alla artister med album och låtar
 async function getAllArtists(req, res) {
