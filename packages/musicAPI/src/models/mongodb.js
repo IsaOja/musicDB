@@ -1,4 +1,4 @@
-const Counter = require("./counter");
+const Counter = require("../controllers/counter");
 const mongoose = require("mongoose");
 
 const artistSchema = new mongoose.Schema({
