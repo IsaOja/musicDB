@@ -9,6 +9,7 @@ db.createCollection("artists");
 
 db.artists.insertMany([
   {
+    id: 1
     _id: ObjectId("6810ca26e062951e2a782365"),
     name: "Yasin",
     genre: "Hip Hop",
@@ -25,6 +26,7 @@ db.artists.insertMany([
     ]
   },
   {
+    id: 2
     _id: ObjectId("6810ca26e062951e2a782366"),
     name: "Asme",
     genre: "Hip Hop",
@@ -41,35 +43,3 @@ db.artists.insertMany([
     ]
   }
 ]);
-
-// Visa all data i artists
-db.artists.find().pretty();
-
-// Visa specifik artist
-db.artists.find({ name: "Yasin" }).pretty();
-
-// Lägg till album till artist (exempelvis om Einár skulle finnas)
-db.artists.updateOne(
-  { name: "Einár" },
-  {
-    $push: {
-      albums: {
-        title: "Andra Albumet",
-        release_year: 2022,
-        tracks: [
-          { title: "Ny Låt A", duration: "1:00" },
-          { title: "Ny Låt B", duration: "3:40" }
-        ]
-      }
-    }
-  }
-);
-
-// Ta bort artisten Asme
-db.artists.deleteOne({ name: "Asme" });
-
-// Hämta alla tracks från ett visst album ("Trakten")
-db.artists.find(
-  { "albums.title": "Trakten" },
-  { "albums.$": 1, name: 1 }
-).pretty();
