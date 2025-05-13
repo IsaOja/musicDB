@@ -15,7 +15,7 @@ db.getConnection()
 
 // MongoDB-anslutning
 mongoose
-  .connect("mongodb://localhost:27017/lab33", {
+  .connect("mongodb://localhost:27017/musikdb", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

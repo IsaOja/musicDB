@@ -3,12 +3,12 @@ import { ref, onMounted } from "vue";
 
 export default {
   setup() {
-    const artists = ref([]); // List of artists
+    const artists = ref([]);
     const newArtist = ref({
       name: "",
       genre: "",
       country: "",
-      albums: [], // Albums for the new artist
+      albums: [],
     });
     const newAlbum = ref({
       title: "",
@@ -18,7 +18,7 @@ export default {
       title: "",
       duration: "",
     });
-    const editingArtist = ref(null); // Artist being edited
+    const editingArtist = ref(null);
 
     const fetchArtists = async () => {
       try {
@@ -49,9 +49,9 @@ export default {
       }
       newArtist.value.albums.push({
         ...newAlbum.value,
-        tracks: [], // Initialize with an empty tracks array
+        tracks: [],
       });
-      newAlbum.value = { title: "", release_year: "" }; // Reset album form
+      newAlbum.value = { title: "", release_year: "" };
     };
 
     const addAlbumToEditingArtist = () => {
@@ -61,9 +61,9 @@ export default {
       }
       editingArtist.value.albums.push({
         ...newAlbum.value,
-        tracks: [], // Initialize with an empty tracks array
+        tracks: [],
       });
-      newAlbum.value = { title: "", release_year: "" }; // Reset album form
+      newAlbum.value = { title: "", release_year: "" };
     };
 
     const addTrackToNewAlbum = (albumIndex) => {
@@ -73,7 +73,7 @@ export default {
         return;
       }
       newArtist.value.albums[albumIndex].tracks.push(track);
-      newTrack.value = { title: "", duration: "" }; // Reset track form
+      newTrack.value = { title: "", duration: "" };
     };
 
     const addTrackToAlbum = (albumIndex) => {
@@ -83,7 +83,7 @@ export default {
         return;
       }
       editingArtist.value.albums[albumIndex].tracks.push(track);
-      newTrack.value = { title: "", duration: "" }; // Reset track form
+      newTrack.value = { title: "", duration: "" };
     };
 
     const removeTrackFromNewAlbum = (albumIndex, trackIndex) => {
@@ -102,18 +102,15 @@ export default {
     };
 
     const editArtist = (artist) => {
-      editingArtist.value = JSON.parse(JSON.stringify(artist)); // Deep copy to avoid mutating the original
+      editingArtist.value = JSON.parse(JSON.stringify(artist));
     };
 
     const updateArtist = async () => {
-      await fetch(
-        `http://localhost:3000/api/mongodb/artists/${editingArtist.value.id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(editingArtist.value),
-        }
-      );
+      await fetch(`http://localhost:3000/api/mongodb/artists/${editingArtist.value.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editingArtist.value),
+      });
       editingArtist.value = null;
       fetchArtists();
     };
@@ -156,34 +153,18 @@ export default {
       <div class="card-body">
         <h2 class="card-title">Add New Artist</h2>
         <div class="mb-3">
-          <input
-            v-model="newArtist.name"
-            class="form-control"
-            placeholder="Name"
-          />
+          <input v-model="newArtist.name" class="form-control" placeholder="Name" />
         </div>
         <div class="mb-3">
-          <input
-            v-model="newArtist.genre"
-            class="form-control"
-            placeholder="Genre"
-          />
+          <input v-model="newArtist.genre" class="form-control" placeholder="Genre" />
         </div>
         <div class="mb-3">
-          <input
-            v-model="newArtist.country"
-            class="form-control"
-            placeholder="Country"
-          />
+          <input v-model="newArtist.country" class="form-control" placeholder="Country" />
         </div>
 
         <h4>Albums:</h4>
         <ul class="list-group mb-3">
-          <li
-            v-for="(album, albumIndex) in newArtist.albums"
-            :key="album.title"
-            class="list-group-item"
-          >
+          <li v-for="(album, albumIndex) in newArtist.albums" :key="album.title" class="list-group-item">
             <strong>{{ album.title }}</strong> ({{ album.release_year }})
             <ul class="list-group mt-2">
               <li
@@ -192,10 +173,7 @@ export default {
                 class="list-group-item d-flex justify-content-between align-items-center"
               >
                 {{ track.title }} - {{ track.duration }}
-                <button
-                  @click="removeTrackFromNewAlbum(albumIndex, trackIndex)"
-                  class="btn btn-danger btn-sm"
-                >
+                <button @click="removeTrackFromNewAlbum(albumIndex, trackIndex)" class="btn btn-danger btn-sm">
                   Remove
                 </button>
               </li>
@@ -204,59 +182,30 @@ export default {
             <div class="mt-3">
               <h5>Add Track</h5>
               <div class="mb-2">
-                <input
-                  v-model="newTrack.title"
-                  class="form-control"
-                  placeholder="Track Title"
-                />
-                <input
-                  v-model="newTrack.duration"
-                  class="form-control"
-                  placeholder="Duration (e.g., 3:45)"
-                />
+                <input v-model="newTrack.title" class="form-control" placeholder="Track Title" />
+                <input v-model="newTrack.duration" class="form-control" placeholder="Duration (e.g., 3:45)" />
               </div>
-              <button
-                @click="addTrackToNewAlbum(albumIndex)"
-                class="btn btn-primary btn-sm"
-              >
-                Add Track
-              </button>
+              <button @click="addTrackToNewAlbum(albumIndex)" class="btn btn-primary btn-sm">Add Track</button>
             </div>
           </li>
         </ul>
 
         <h5>Add Album</h5>
         <div class="mb-2">
-          <input
-            v-model="newAlbum.title"
-            class="form-control"
-            placeholder="Album Title"
-          />
+          <input v-model="newAlbum.title" class="form-control" placeholder="Album Title" />
         </div>
         <div class="mb-2">
-          <input
-            v-model="newAlbum.release_year"
-            class="form-control"
-            placeholder="Release Year"
-          />
+          <input v-model="newAlbum.release_year" class="form-control" placeholder="Release Year" />
         </div>
-        <div
-          class="d-flex justify-content-center align-items-center mt-3 gap-2"
-        >
-          <button @click="addAlbumToNewArtist" class="btn btn-success">
-            Add Album
-          </button>
+        <div class="d-flex justify-content-center align-items-center mt-3 gap-2">
+          <button @click="addAlbumToNewArtist" class="btn btn-success">Add Album</button>
           <button @click="addArtist" class="btn btn-primary">Add Artist</button>
         </div>
       </div>
     </div>
 
     <!-- Artists List -->
-    <div
-      v-if="artists.length"
-      class="row justify-content-center"
-      style="max-width: 900px"
-    >
+    <div v-if="artists.length" class="row justify-content-center" style="max-width: 900px">
       <h2 class="text-center mb-4">Artists</h2>
       <div v-for="artist in artists" :key="artist.id" class="col-12 mb-4">
         <div v-if="editingArtist && editingArtist.id === artist.id">
@@ -264,46 +213,22 @@ export default {
             <div class="card-body">
               <h2 class="card-title">Edit Artist</h2>
               <div class="mb-3">
-                <input
-                  v-model="editingArtist.name"
-                  class="form-control"
-                  placeholder="Name"
-                />
+                <input v-model="editingArtist.name" class="form-control" placeholder="Name" />
               </div>
               <div class="mb-3">
-                <input
-                  v-model="editingArtist.genre"
-                  class="form-control"
-                  placeholder="Genre"
-                />
+                <input v-model="editingArtist.genre" class="form-control" placeholder="Genre" />
               </div>
               <div class="mb-3">
-                <input
-                  v-model="editingArtist.country"
-                  class="form-control"
-                  placeholder="Country"
-                />
+                <input v-model="editingArtist.country" class="form-control" placeholder="Country" />
               </div>
               <h4>Albums:</h4>
               <ul class="list-group mb-3">
-                <li
-                  v-for="(album, albumIndex) in editingArtist.albums"
-                  :key="album.title"
-                  class="list-group-item"
-                >
+                <li v-for="(album, albumIndex) in editingArtist.albums" :key="album.title" class="list-group-item">
                   <div class="mb-2">
-                    <input
-                      v-model="album.title"
-                      class="form-control"
-                      placeholder="Album Title"
-                    />
+                    <input v-model="album.title" class="form-control" placeholder="Album Title" />
                   </div>
                   <div class="mb-2">
-                    <input
-                      v-model="album.release_year"
-                      class="form-control"
-                      placeholder="Release Year"
-                    />
+                    <input v-model="album.release_year" class="form-control" placeholder="Release Year" />
                   </div>
                   <ul class="list-group mt-2">
                     <li
@@ -312,81 +237,36 @@ export default {
                       class="list-group-item d-flex justify-content-center align-items-center"
                     >
                       <div>
-                        <input
-                          v-model="track.title"
-                          class="form-control mb-2"
-                          placeholder="Track Title"
-                        />
-                        <input
-                          v-model="track.duration"
-                          class="form-control"
-                          placeholder="Duration (e.g., 3:45)"
-                        />
+                        <input v-model="track.title" class="form-control mb-2" placeholder="Track Title" />
+                        <input v-model="track.duration" class="form-control" placeholder="Duration (e.g., 3:45)" />
                       </div>
-                      <button
-                        @click="removeTrack(albumIndex, trackIndex)"
-                        class="btn btn-danger btn-sm"
-                      >
-                        Remove
-                      </button>
+                      <button @click="removeTrack(albumIndex, trackIndex)" class="btn btn-danger btn-sm">Remove</button>
                     </li>
                   </ul>
                   <div class="mt-3">
                     <h5>Add Track</h5>
                     <div class="mb-2">
-                      <input
-                        v-model="newTrack.title"
-                        class="form-control"
-                        placeholder="Track Title"
-                      />
+                      <input v-model="newTrack.title" class="form-control" placeholder="Track Title" />
                     </div>
                     <div class="mb-2">
-                      <input
-                        v-model="newTrack.duration"
-                        class="form-control"
-                        placeholder="Duration (e.g., 3:45)"
-                      />
+                      <input v-model="newTrack.duration" class="form-control" placeholder="Duration (e.g., 3:45)" />
                     </div>
-                    <button
-                      @click="addTrackToAlbum(albumIndex)"
-                      class="btn btn-primary btn-sm"
-                    >
-                      Add Track
-                    </button>
+                    <button @click="addTrackToAlbum(albumIndex)" class="btn btn-primary btn-sm">Add Track</button>
                   </div>
                 </li>
               </ul>
               <h5>Add Album</h5>
               <div class="mb-2">
-                <input
-                  v-model="newAlbum.title"
-                  class="form-control"
-                  placeholder="Album Title"
-                />
+                <input v-model="newAlbum.title" class="form-control" placeholder="Album Title" />
               </div>
               <div class="mb-2">
-                <input
-                  v-model="newAlbum.release_year"
-                  class="form-control"
-                  placeholder="Release Year"
-                />
+                <input v-model="newAlbum.release_year" class="form-control" placeholder="Release Year" />
               </div>
-              <div
-                class="d-flex justify-content-center align-items-center mt-3 gap-2"
-              >
-                <button
-                  @click="addAlbumToEditingArtist"
-                  class="btn btn-success"
-                >
-                  Add Album
-                </button>
+              <div class="d-flex justify-content-center align-items-center mt-3 gap-2">
+                <button @click="addAlbumToEditingArtist" class="btn btn-success">Add Album</button>
                 <div class="d-flex gap-2">
-                  <button @click="updateArtist" class="btn btn-primary">
-                    Save Changes
-                  </button>
-                  <button @click="cancelEdit" class="btn btn-secondary">
-                    Cancel
-                  </button>
+                  <button @click="updateArtist" class="btn btn-primary">Save Changes</button>
+                  <button @click="cancelEdit" class="btn btn-secondary">Cancel</button>
                 </div>
               </div>
             </div>
@@ -400,18 +280,10 @@ export default {
             <p><strong>Country:</strong> {{ artist.country }}</p>
             <h4>Albums:</h4>
             <ul class="list-group">
-              <li
-                v-for="album in artist.albums"
-                :key="album.title"
-                class="list-group-item"
-              >
+              <li v-for="album in artist.albums" :key="album.title" class="list-group-item">
                 <strong>{{ album.title }}</strong> ({{ album.release_year }})
                 <ul class="list-group mt-2">
-                  <li
-                    v-for="track in album.tracks"
-                    :key="track.title"
-                    class="list-group-item"
-                  >
+                  <li v-for="track in album.tracks" :key="track.title" class="list-group-item">
                     {{ track.title }} - {{ track.duration }}
                   </li>
                 </ul>
@@ -419,12 +291,8 @@ export default {
             </ul>
           </div>
           <div class="card-footer d-flex justify-content-center gap-2">
-            <button @click="deleteArtist(artist.id)" class="btn btn-danger">
-              Delete
-            </button>
-            <button @click="editArtist(artist)" class="btn btn-primary">
-              Edit
-            </button>
+            <button @click="deleteArtist(artist.id)" class="btn btn-danger">Delete</button>
+            <button @click="editArtist(artist)" class="btn btn-primary">Edit</button>
           </div>
         </div>
       </div>

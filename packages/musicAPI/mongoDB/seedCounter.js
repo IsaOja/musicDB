@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Counter = require("./counter");
 
-mongoose.connect("mongodb://localhost:27017/lab33", {
+mongoose.connect("mongodb://localhost:27017/musikdb", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
