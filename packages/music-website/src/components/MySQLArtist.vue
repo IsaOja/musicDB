@@ -35,11 +35,13 @@ export default {
 
     // Add a new artist
     const addArtist = async () => {
-      await fetch("http://localhost:3000/api/mysql/artists", {
+      const res = await fetch("http://localhost:3000/api/mysql/artists", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newArtist.value),
       });
+      const data = await res.json()
+      console.log("Add artist resultat:", data)
       newArtist.value = { name: "", genre: "", country: "", albums: [] };
       fetchArtists();
     };
