@@ -1,12 +1,12 @@
+<script setup>
+import MongoArtist from "../components/MongoArtist.vue";
+</script>
+
 <template>
   <div>
     <MongoArtist />
   </div>
 </template>
-
-<script setup>
-import MongoArtist from "../components/MongoArtist.vue";
-</script>
 
 <style scoped>
 h1 {

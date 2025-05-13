@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Artist = require("../../mongoDB/mongodb");
+const Artist = require("../models/mongodb");
 
 // Hämta alla artister
 router.get("/artists", async (req, res) => {
@@ -45,11 +45,7 @@ router.put("/artists/:id", async (req, res) => {
     const artistId = req.params.id;
     const updatedData = req.body;
 
-    const result = await Artist.findOneAndUpdate(
-      { id: artistId }, // Match the artist by the `id` field
-      updatedData, // Update the artist with the new data
-      { new: true } // Return the updated document
-    );
+    const result = await Artist.findOneAndUpdate({ id: artistId }, updatedData, { new: true });
 
     if (!result) {
       return res.status(404).json({ error: "Artist not found" });
