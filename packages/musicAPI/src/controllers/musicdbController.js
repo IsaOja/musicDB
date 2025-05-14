@@ -1,14 +1,14 @@
-const db = require('../db');  
+const db = require("../db");
 
 // Hämta alla artister med album och låtar
 async function getAllArtists(req, res) {
   try {
     const [rows] = await db.execute(`
-      SELECT 
+      SELECT
         Artist.id AS artist_id,
         Artist.name AS artist_name,
         Artist.genre,
-        Artist.country,
+        Artist.about,
         Album.id AS album_id,
         Album.title AS album_title,
         Album.release_year,
@@ -29,7 +29,7 @@ async function getAllArtists(req, res) {
           id: row.artist_id,
           name: row.artist_name,
           genre: row.genre,
-          country: row.country,
+          about: row.about,
           albums: [],
         });
       }
@@ -37,7 +37,7 @@ async function getAllArtists(req, res) {
       const artist = artists.get(row.artist_id);
 
       if (row.album_id) {
-        let album = artist.albums.find(a => a.id === row.album_id);
+        let album = artist.albums.find((a) => a.id === row.album_id);
         if (!album) {
           album = {
             id: row.album_id,
@@ -67,19 +67,16 @@ async function getAllArtists(req, res) {
 
 // Skapa ny artist
 async function createArtist(req, res) {
-  const { name, genre, country } = req.body;
+  const { name, genre, about } = req.body;
 
   try {
-    const [result] = await db.execute(
-      "INSERT INTO Artist (name, genre, country) VALUES (?, ?, ?)",
-      [name, genre, country]
-    );
+    const [result] = await db.execute("INSERT INTO Artist (name, genre, about) VALUES (?, ?, ?)", [name, genre, about]);
 
     res.status(201).json({
       id: result.insertId,
       name,
       genre,
-      country,
+      about,
     });
   } catch (err) {
     console.error("Fel vid skapande:", err.message);
@@ -90,15 +87,12 @@ async function createArtist(req, res) {
 // Uppdatera artist
 async function updateArtist(req, res) {
   const { id } = req.params;
-  const { name, genre, country } = req.body;
+  const { name, genre, about } = req.body;
 
   try {
-    await db.execute(
-      "UPDATE Artist SET name = ?, genre = ?, country = ? WHERE id = ?",
-      [name, genre, country, id]
-    );
+    await db.execute("UPDATE Artist SET name = ?, genre = ?, about = ? WHERE id = ?", [name, genre, about, id]);
 
-    res.json({ id, name, genre, country });
+    res.json({ id, name, genre, about });
   } catch (err) {
     console.error("Fel vid uppdatering:", err.message);
     res.status(500).json({ error: "Kunde inte uppdatera artist" });

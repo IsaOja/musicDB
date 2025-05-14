@@ -7,7 +7,7 @@ export default {
     const newArtist = ref({
       name: "",
       genre: "",
-      country: "",
+      about: "",
     });
     const editingArtist = ref(null);
 
@@ -33,7 +33,7 @@ export default {
       });
       const data = await res.json();
       console.log("Add artist result:", data);
-      newArtist.value = { name: "", genre: "", country: "" };
+      newArtist.value = { name: "", genre: "", about: "" };
       fetchArtists();
     };
 
@@ -98,7 +98,7 @@ export default {
           <input v-model="newArtist.genre" class="form-control" placeholder="Genre" />
         </div>
         <div class="mb-3">
-          <input v-model="newArtist.country" class="form-control" placeholder="Country" />
+          <textarea v-model="newArtist.about" class="form-control" placeholder="About Artist" rows="3"></textarea>
         </div>
         <div class="d-flex justify-content-center align-items-center mt-3">
           <button @click="addArtist" class="btn btn-primary">Add Artist</button>
@@ -121,7 +121,12 @@ export default {
                 <input v-model="editingArtist.genre" class="form-control" placeholder="Genre" />
               </div>
               <div class="mb-3">
-                <input v-model="editingArtist.country" class="form-control" placeholder="Country" />
+                <textarea
+                  v-model="editingArtist.about"
+                  class="form-control"
+                  placeholder="About Artist"
+                  rows="3"
+                ></textarea>
               </div>
               <div class="d-flex justify-content-center align-items-center mt-3 gap-2">
                 <button @click="updateArtist" class="btn btn-primary">Save Changes</button>
@@ -135,7 +140,7 @@ export default {
           <div class="card-body">
             <h3 class="card-title">{{ artist.name }}</h3>
             <p><strong>Genre:</strong> {{ artist.genre }}</p>
-            <p><strong>Country:</strong> {{ artist.country }}</p>
+            <p><strong>About Artist:</strong> {{ artist.about }}</p>
           </div>
           <div class="card-footer d-flex justify-content-center gap-2">
             <button @click="deleteArtist(artist.id)" class="btn btn-danger">Delete</button>

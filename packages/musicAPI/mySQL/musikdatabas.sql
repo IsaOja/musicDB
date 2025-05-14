@@ -7,7 +7,8 @@ CREATE TABLE Artist (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     genre VARCHAR(100),
-    country VARCHAR(100)
+    country VARCHAR(100),
+    about TEXT
 );
 
 -- Album
